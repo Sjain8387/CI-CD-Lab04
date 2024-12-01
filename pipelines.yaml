@@ -42,5 +42,5 @@ stages:
     - task: AzureFunctionApp@1
       inputs:
         azureSubscription: 'Azure for Students'
-        appName: 'MyFunctionApp'  
+        appName: 'cicdpipeline04'  
         package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
