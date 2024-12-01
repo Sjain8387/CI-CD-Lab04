@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+    myfunctionapp.api:
+    image: ${DOCKER_REGISTRY-}myfunctionapp.api
+    build:
+      context: src
+      dockerfile: MyFunctionApp.Functions/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
