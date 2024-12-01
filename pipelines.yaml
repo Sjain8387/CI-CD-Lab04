@@ -1,46 +1,23 @@
+---
 stages:
-- stage: Build
-  displayName: 'Build Stage'
-  jobs:
-  - job: Build
-    displayName: 'Build the Function App'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - task: UseDotNet@2
-      inputs:
-        packageType: 'sdk'
-        version: '5.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
-    - script: |
-        dotnet restore
-        dotnet build --configuration Release
-      displayName: 'Build the Azure Function'
-
-- stage: Test
-  displayName: 'Test Stage'
-  dependsOn: Build
-  jobs:
-  - job: Test
-    displayName: 'Run Unit Tests'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - script: |
-        dotnet test --configuration Release
-      displayName: 'Run Tests'
-
-- stage: Deploy
-  displayName: 'Deploy to Azure'
-  dependsOn: Test
-  jobs:
-  - job: Deploy
-    displayName: 'Deploy Function to Azure'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - task: AzureFunctionApp@1
-      inputs:
-        azureSubscription: 'Azure for Students'
-        appName: 'cicdpipeline04'  
-        package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+  - stage: Build
+    displayName: Build Stage
+    jobs:
+      - job: Build
+        displayName: Build the Function App
+        pool:
+          vmImage: windows-latest
+        steps:
+          - checkout: self
+            submodules: true
+            persistCredentials: true
+          - task: UseDotNet@2
+            inputs:
+              packageType: sdk
+              version: 5.x
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+          - script: |
+              echo  '$(System.DefaultWorkingDirectory)'
+              dotnet restore
+              dotnet build --configuration Release
+            displayName: Build the Azure
