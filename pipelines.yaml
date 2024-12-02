@@ -18,6 +18,7 @@ stages:
               installationPath: $(Agent.ToolsDirectory)/dotnet
           - script: |
               echo  '$(System.DefaultWorkingDirectory)'
+              cd src/MyFunctionApp.Functions
               dotnet restore
               dotnet build --configuration Release
             displayName: Build the Azure
