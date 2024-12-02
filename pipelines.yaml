@@ -18,7 +18,24 @@ stages:
               installationPath: $(Agent.ToolsDirectory)/dotnet
           - script: |
               echo  '$(System.DefaultWorkingDirectory)'
-              dir
               dotnet restore
               dotnet build --configuration Release
             displayName: Build the Azure
+
+  - stage: Test
+    displayName: Test Stage
+    dependsOn: Build
+    jobs:
+      - job: Test
+        displayName: Run Unit Tests
+        pool:
+          vmImage: windows-latest
+
+  - stage: Deploy
+    displayName: Deploy to Azure
+    dependsOn: Test
+    jobs:
+      - job: Deploy
+        displayName: Deploy Function to Azure
+        pool:
+          vmImage: windows-latest
